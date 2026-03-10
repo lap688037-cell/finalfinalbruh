@@ -1,0 +1,122 @@
+import { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
+import { Calendar, Users, Clock, Mail, User, Check, X } from 'lucide-react';
+
+interface Booking {
+  id: number;
+  name: string;
+  email: string;
+  date: string;
+  time: string;
+  guests: number;
+  status: string;
+  created_at: string;
+}
+
+export default function AdminView() {
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const response = await fetch('/api/bookings');
+      const data = await response.json();
+      setBookings(data);
+    } catch (error) {
+      console.error('Failed to fetch bookings', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-cream p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-end mb-12">
+          <div>
+            <h1 className="text-4xl font-bold text-deep-green mb-2">Admin Dashboard</h1>
+            <p className="text-deep-green/60 text-lg">Manage your cafe reservations and guest list.</p>
+          </div>
+          <div className="bg-white px-6 py-3 rounded-2xl shadow-sm border border-sage/10">
+            <span className="text-sm font-bold text-deep-green/40 uppercase tracking-widest block">Total Bookings</span>
+            <span className="text-2xl font-bold text-sage">{bookings.length}</span>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="w-12 h-12 border-4 border-sage border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <div className="grid gap-6">
+            {bookings.map((booking) => (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                key={booking.id}
+                className="bg-white p-6 rounded-3xl shadow-sm border border-sage/10 flex flex-wrap items-center justify-between gap-8 hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-6">
+                  <div className="w-14 h-14 bg-sage/10 text-sage rounded-2xl flex items-center justify-center shrink-0">
+                    <User size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-deep-green">{booking.name}</h3>
+                    <div className="flex items-center gap-2 text-deep-green/60 text-sm">
+                      <Mail size={14} />
+                      {booking.email}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-8">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="text-sage" size={20} />
+                    <div>
+                      <span className="text-[10px] font-bold text-deep-green/40 uppercase tracking-widest block">Date</span>
+                      <span className="font-bold text-deep-green">{booking.date}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Clock className="text-sage" size={20} />
+                    <div>
+                      <span className="text-[10px] font-bold text-deep-green/40 uppercase tracking-widest block">Time</span>
+                      <span className="font-bold text-deep-green">{booking.time}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Users className="text-sage" size={20} />
+                    <div>
+                      <span className="text-[10px] font-bold text-deep-green/40 uppercase tracking-widest block">Guests</span>
+                      <span className="font-bold text-deep-green">{booking.guests}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors">
+                    <Check size={20} />
+                  </button>
+                  <button className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center hover:bg-rose-100 transition-colors">
+                    <X size={20} />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+
+            {bookings.length === 0 && (
+              <div className="text-center py-24 bg-white/50 rounded-[40px] border-2 border-dashed border-sage/20">
+                <Calendar className="mx-auto text-sage/30 mb-4" size={48} />
+                <h3 className="text-xl font-bold text-deep-green/40">No bookings yet</h3>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

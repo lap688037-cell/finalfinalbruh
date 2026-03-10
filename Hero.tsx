@@ -1,0 +1,57 @@
+import { motion } from 'motion/react';
+import { Coffee, ArrowRight } from 'lucide-react';
+
+export default function Hero({ onBookClick }: { onBookClick: () => void }) {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="z-10"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sage/10 text-sage font-medium text-sm mb-6">
+            <Coffee size={16} />
+            <span>Artisan Coffee Experience</span>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-bold text-deep-green leading-tight mb-6 text-balance">
+            Fresh Coffee.<br />
+            <span className="text-sage">Calm Moments.</span>
+          </h1>
+          <p className="text-lg md:text-xl text-deep-green/70 mb-10 max-w-lg">
+            Escape the rush and find your sanctuary in our nature-inspired lounge. 
+            Hand-roasted beans, artisanal pastries, and a breath of fresh air.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button 
+              onClick={onBookClick}
+              className="px-8 py-4 bg-deep-green text-cream rounded-full font-semibold hover:bg-deep-green/90 transition-all flex items-center gap-2 group shadow-lg shadow-deep-green/20"
+            >
+              Book a Table
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <a 
+              href="#about"
+              className="px-8 py-4 border-2 border-deep-green text-deep-green rounded-full font-semibold hover:bg-deep-green hover:text-cream transition-all text-center"
+            >
+              Our Story
+            </a>
+          </div>
+        </motion.div>
+        
+        <div className="relative h-[500px] lg:h-[700px] hidden lg:block">
+          {/* 3D elements are handled by the background canvas, but we can add some decorative elements here if needed */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="w-96 h-96 bg-sage/20 rounded-full blur-3xl" />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
