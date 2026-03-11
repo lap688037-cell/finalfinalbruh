@@ -11,8 +11,9 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "src": "/api/bookings", "dest": "/api/bookings.ts" },
+    { "src": "/api/newsletter", "dest": "/api/newsletter.ts" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
