@@ -1,6 +1,6 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import path from "path";
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 const isVercel = !!process.env.VERCEL;
 
@@ -12,12 +12,28 @@ async function connectDB() {
     console.warn("No MONGODB_URI set — database features disabled.");
     return;
   }
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI as string);
   isConnected = true;
 }
 
+// ── Interfaces ────────────────────────────────────────────────────────────────
+interface IBooking extends Document {
+  name: string;
+  email: string;
+  date: string;
+  time: string;
+  guests: number;
+  status: string;
+  created_at: Date;
+}
+
+interface INewsletter extends Document {
+  email: string;
+  created_at: Date;
+}
+
 // ── Schemas ───────────────────────────────────────────────────────────────────
-const bookingSchema = new mongoose.Schema({
+const bookingSchema = new Schema<IBooking>({
   name:       { type: String, required: true },
   email:      { type: String, required: true },
   date:       { type: String, required: true },
@@ -27,34 +43,37 @@ const bookingSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now },
 });
 
-const newsletterSchema = new mongoose.Schema({
+const newsletterSchema = new Schema<INewsletter>({
   email:      { type: String, required: true, unique: true },
   created_at: { type: Date, default: Date.now },
 });
 
-const Booking    = mongoose.models.Booking    || mongoose.model("Booking",    bookingSchema);
-const Newsletter = mongoose.models.Newsletter || mongoose.model("Newsletter", newsletterSchema);
+const Booking    = mongoose.models.Booking    || mongoose.model<IBooking>("Booking", bookingSchema);
+const Newsletter = mongoose.models.Newsletter || mongoose.model<INewsletter>("Newsletter", newsletterSchema);
 
 // ── Express App ───────────────────────────────────────────────────────────────
 const app = express();
 app.use(express.json());
 
-// API Routes
-app.post("/api/bookings", async (req, res) => {
+// POST /api/bookings
+app.post("/api/bookings", async (req: Request, res: Response) => {
   try {
     await connectDB();
     const { name, email, date, time, guests } = req.body;
     if (!name || !email || !date || !time || !guests) {
-      return res.status(400).json({ error: "All fields are required." });
+      res.status(400).json({ error: "All fields are required." });
+      return;
     }
-    const booking = await Booking.create({ name, email, date, time, guests });
+    const booking = new Booking({ name, email, date, time, guests });
+    await booking.save();
     res.json({ id: booking._id, success: true });
   } catch (error) {
     res.status(500).json({ error: "Failed to create booking" });
   }
 });
 
-app.get("/api/bookings", async (req, res) => {
+// GET /api/bookings
+app.get("/api/bookings", async (_req: Request, res: Response) => {
   try {
     await connectDB();
     const bookings = await Booking.find().sort({ created_at: -1 });
@@ -64,24 +83,27 @@ app.get("/api/bookings", async (req, res) => {
   }
 });
 
-app.post("/api/newsletter", async (req, res) => {
+// POST /api/newsletter
+app.post("/api/newsletter", async (req: Request, res: Response) => {
   try {
     await connectDB();
     const { email } = req.body;
-    await Newsletter.create({ email });
+    const entry = new Newsletter({ email });
+    await entry.save();
     res.json({ success: true });
   } catch (error: any) {
     if (error.code === 11000) {
-      return res.status(400).json({ error: "Already subscribed" });
+      res.status(400).json({ error: "Already subscribed" });
+      return;
     }
     res.status(500).json({ error: "Failed to subscribe" });
   }
 });
 
-// Serve frontend in production
+// Serve frontend in production (non-Vercel)
 if (!isVercel) {
   app.use(express.static(path.join(process.cwd(), "dist")));
-  app.get("*", (_req, res) => {
+  app.get("*", (_req: Request, res: Response) => {
     res.sendFile(path.join(process.cwd(), "dist", "index.html"));
   });
 
