@@ -7,13 +7,13 @@
       "config": { "distDir": "dist" }
     },
     {
-      "src": "api/**/*.ts",
+      "src": "api/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/api/bookings", "dest": "/api/bookings.ts" },
-    { "src": "/api/newsletter", "dest": "/api/newsletter.ts" },
+    { "src": "/api/bookings", "dest": "/api/bookings.js" },
+    { "src": "/api/newsletter", "dest": "/api/newsletter.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
