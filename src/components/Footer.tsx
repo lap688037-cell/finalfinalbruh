@@ -26,7 +26,8 @@ export default function Footer() {
             <a
               href="https://www.instagram.com/chook_cafe/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
+              aria-label="Visit Chook Cafe on Instagram"
               className="w-10 h-10 rounded-full bg-white border border-sage/10 flex items-center justify-center text-deep-green hover:bg-sage hover:text-white transition-all shadow-sm"
             >
               <Instagram size={18} />
