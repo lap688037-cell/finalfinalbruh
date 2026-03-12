@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "generate:gallery-images": "node scripts/generate-gallery-images.js",
+    "predev": "node scripts/generate-gallery-images.js",
+    "prebuild": "node scripts/generate-gallery-images.js",
+    "prepreview": "node scripts/generate-gallery-images.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

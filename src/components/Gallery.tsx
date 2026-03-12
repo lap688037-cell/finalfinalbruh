@@ -1,13 +1,5 @@
 import { motion } from 'motion/react';
-
-const GALLERY_IMAGES = [
-  { src: "/chook-coffee.webp", alt: "Latte art at Chook Cafe" },
-  { src: "/chook-burger.webp", alt: "Chook Cafe burger and fries" },
-  { src: "/chook-cheesecake.webp", alt: "San Sebastian cheesecake and coffee" },
-  { src: "/chook-croissant.webp", alt: "Croissant sandwich at Chook Cafe" },
-  { src: "/chook-chicken.webp", alt: "Healthy chicken plate at Chook Cafe" },
-  { src: "/chook-meat.webp", alt: "Meat dish at Chook Cafe" },
-];
+import { GALLERY_IMAGES } from '../data/gallery-images';
 
 export default function Gallery() {
   return (
