@@ -14,7 +14,7 @@ export default function About() {
           >
             <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1000" 
+                src="/chook-cheesecake.webp" 
                 alt="Chook Cafe Interior" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"

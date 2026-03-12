@@ -1,12 +1,12 @@
 import { motion } from 'motion/react';
 
 const GALLERY_IMAGES = [
-  "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1559925393-8be0ec41b50b?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&q=80&w=800"
+  { src: "/chook-coffee.webp", alt: "Latte art at Chook Cafe" },
+  { src: "/chook-burger.webp", alt: "Chook Cafe burger and fries" },
+  { src: "/chook-cheesecake.webp", alt: "San Sebastian cheesecake and coffee" },
+  { src: "/chook-croissant.webp", alt: "Croissant sandwich at Chook Cafe" },
+  { src: "/chook-chicken.webp", alt: "Healthy chicken plate at Chook Cafe" },
+  { src: "/chook-meat.webp", alt: "Meat dish at Chook Cafe" },
 ];
 
 export default function Gallery() {
@@ -16,12 +16,12 @@ export default function Gallery() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-deep-green mb-4">Aesthetic Moments</h2>
           <p className="text-deep-green/60 max-w-2xl mx-auto">
-            A glimpse into our sanctuary. Follow us on social media for more daily inspiration.
+            A glimpse into Chook Cafe. Come visit us on Al Hadiqa Street, Muscat.
           </p>
         </div>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-          {GALLERY_IMAGES.map((src, index) => (
+          {GALLERY_IMAGES.map((img, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -31,10 +31,9 @@ export default function Gallery() {
               className="relative rounded-3xl overflow-hidden group cursor-pointer"
             >
               <img 
-                src={src} 
-                alt={`Gallery ${index}`} 
+                src={img.src}
+                alt={img.alt}
                 className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-700"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-sage/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </motion.div>
