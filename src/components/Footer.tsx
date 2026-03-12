@@ -1,4 +1,4 @@
-import { Instagram, Twitter, Facebook, Coffee } from 'lucide-react';
+import { Instagram, Coffee } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -23,14 +23,13 @@ export default function Footer() {
           </nav>
 
           <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 rounded-full bg-white border border-sage/10 flex items-center justify-center text-deep-green hover:bg-sage hover:text-white transition-all shadow-sm">
+            <a
+              href="https://www.instagram.com/chook_cafe/"
+              target="_blank"
+              rel="noreferrer"
+              className="w-10 h-10 rounded-full bg-white border border-sage/10 flex items-center justify-center text-deep-green hover:bg-sage hover:text-white transition-all shadow-sm"
+            >
               <Instagram size={18} />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white border border-sage/10 flex items-center justify-center text-deep-green hover:bg-sage hover:text-white transition-all shadow-sm">
-              <Twitter size={18} />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white border border-sage/10 flex items-center justify-center text-deep-green hover:bg-sage hover:text-white transition-all shadow-sm">
-              <Facebook size={18} />
             </a>
           </div>
         </div>
