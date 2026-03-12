@@ -10,16 +10,16 @@ export default function Footer() {
               <Coffee size={24} />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-deep-green leading-none">Verdant Brew</h3>
-              <p className="text-xs font-medium text-sage uppercase tracking-widest mt-1">Coffee Sanctuary</p>
+              <h3 className="text-2xl font-bold text-deep-green leading-none">Chook Cafe</h3>
+              <p className="text-xs font-medium text-sage uppercase tracking-widest mt-1">Al Hadiqa St, Muscat</p>
             </div>
           </div>
 
           <nav className="flex gap-8 text-sm font-semibold text-deep-green/60">
             <a href="#" className="hover:text-sage transition-colors">Home</a>
-            <a href="#" className="hover:text-sage transition-colors">Menu</a>
-            <a href="#" className="hover:text-sage transition-colors">About</a>
-            <a href="#" className="hover:text-sage transition-colors">Contact</a>
+            <a href="#menu" className="hover:text-sage transition-colors">Menu</a>
+            <a href="#about" className="hover:text-sage transition-colors">About</a>
+            <a href="#contact" className="hover:text-sage transition-colors">Contact</a>
           </nav>
 
           <div className="flex gap-4">
@@ -36,7 +36,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-sage/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-deep-green/40 uppercase tracking-widest">
-          <p>© 2024 Verdant Brew Cafe. All rights reserved.</p>
+          <p>© 2026 Chook Cafe, Muscat. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-sage transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-sage transition-colors">Terms of Service</a>

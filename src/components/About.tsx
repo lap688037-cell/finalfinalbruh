@@ -15,7 +15,7 @@ export default function About() {
             <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
               <img 
                 src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1000" 
-                alt="Cafe Interior" 
+                alt="Chook Cafe Interior" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -34,24 +34,24 @@ export default function About() {
             </h2>
             <div className="space-y-6 text-lg text-deep-green/70">
               <p>
-                Verdant Brew was born from a simple idea: that coffee should be enjoyed in a space that feels as alive as the beans themselves. We've curated a modern coffee lounge that brings the outdoors in.
+                Chook Cafe was born from a love of good coffee and warm hospitality. Nestled on Al Hadiqa Street in the heart of Muscat, we've created a space where every visit feels like a break from the everyday.
               </p>
               <p>
-                Every plant in our cafe is carefully chosen to improve air quality and create a serene atmosphere. Our beans are ethically sourced from sustainable farms, ensuring that every sip supports the environment we love.
+                From our rich, carefully brewed espresso to our Healthy Chicken Sandwich and indulgent Dates Cake, every item on our menu is made with care. We believe great food and great coffee should be accessible to everyone.
               </p>
               <p>
-                Whether you're here for a quick morning pick-me-up or a long afternoon of creative work, our sanctuary is designed to help you recharge and reconnect.
+                Whether you're stopping by for a quick drive-through coffee or settling in for a long afternoon, Chook Cafe is your home away from home in Muscat.
               </p>
             </div>
             
             <div className="mt-12 grid grid-cols-2 gap-8">
               <div>
-                <h4 className="text-3xl font-bold text-sage mb-1">100%</h4>
-                <p className="text-sm font-medium text-deep-green/60 uppercase tracking-wider">Organic Beans</p>
+                <h4 className="text-3xl font-bold text-sage mb-1">4.6★</h4>
+                <p className="text-sm font-medium text-deep-green/60 uppercase tracking-wider">172 Reviews</p>
               </div>
               <div>
-                <h4 className="text-3xl font-bold text-sage mb-1">50+</h4>
-                <p className="text-sm font-medium text-deep-green/60 uppercase tracking-wider">Plant Species</p>
+                <h4 className="text-3xl font-bold text-sage mb-1">OMR 2–4</h4>
+                <p className="text-sm font-medium text-deep-green/60 uppercase tracking-wider">Per Person</p>
               </div>
             </div>
           </motion.div>

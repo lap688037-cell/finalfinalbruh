@@ -3,25 +3,23 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const MENU_DATA = {
   Coffee: [
-    { name: "Signature Sage Latte", price: "$6.50", desc: "Espresso with steamed milk and a hint of organic sage syrup." },
-    { name: "Forest Cold Brew", price: "$5.75", desc: "12-hour steep with notes of pine and dark chocolate." },
-    { name: "Oat Milk Flat White", price: "$5.25", desc: "Smooth espresso with creamy oat micro-foam." },
-    { name: "Verdant Espresso", price: "$3.50", desc: "Our house blend with a bright, floral finish." },
+    { name: "Cappuccino", price: "OMR 1.500", desc: "Classic Italian espresso with velvety steamed milk foam." },
+    { name: "Iced Americano", price: "OMR 1.200", desc: "Bold espresso shots over ice, smooth and refreshing." },
+    { name: "Mocha", price: "OMR 1.800", desc: "Rich espresso blended with chocolate and steamed milk." },
+    { name: "Omani Coffee", price: "OMR 1.000", desc: "Traditional aromatic Omani coffee with cardamom and saffron." },
+    { name: "Latte", price: "OMR 1.600", desc: "Smooth espresso with creamy steamed milk." },
+    { name: "Cold Brew", price: "OMR 1.800", desc: "Slow-steeped for 12 hours for a smooth, bold flavour." },
   ],
-  Tea: [
-    { name: "Wildflower Matcha", price: "$6.25", desc: "Ceremonial grade matcha with edible flower petals." },
-    { name: "Herbal Zen Blend", price: "$4.50", desc: "Chamomile, lemongrass, and fresh mint leaves." },
-    { name: "Smoky Earl Grey", price: "$4.75", desc: "Traditional bergamot with a hint of lapsang souchong." },
-  ],
-  Pastries: [
-    { name: "Pistachio Croissant", price: "$5.50", desc: "Flaky layers filled with house-made pistachio cream." },
-    { name: "Lavender Scone", price: "$4.25", desc: "Buttery scone with dried lavender and lemon glaze." },
-    { name: "Matcha Muffin", price: "$4.75", desc: "Soft muffin with white chocolate chunks and matcha." },
+  Food: [
+    { name: "Healthy Chicken Sandwich", price: "OMR 2.500", desc: "Grilled chicken with fresh greens and house sauce on toasted bread." },
+    { name: "Shakshuka", price: "OMR 2.800", desc: "Rich, flavorful eggs poached in spiced tomato sauce. A crowd favourite." },
+    { name: "Halloumi Croissant", price: "OMR 2.200", desc: "Flaky buttery croissant filled with grilled halloumi cheese." },
+    { name: "Croissant", price: "OMR 1.500", desc: "Classic golden, flaky French croissant baked fresh daily." },
   ],
   Desserts: [
-    { name: "Basque Cheesecake", price: "$8.00", desc: "Creamy, burnt-top cheesecake with berry compote." },
-    { name: "Dark Chocolate Tart", price: "$7.50", desc: "70% cocoa with a sea salt and hazelnut crust." },
-  ]
+    { name: "Dates Cake", price: "OMR 1.800", desc: "Moist, rich cake made with Omani dates — a local favourite." },
+    { name: "San Sebastian Cheesecake", price: "OMR 2.500", desc: "Creamy burnt Basque cheesecake with a caramelised top." },
+  ],
 };
 
 export default function Menu() {
@@ -31,9 +29,9 @@ export default function Menu() {
     <section className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-deep-green mb-4">Artisan Menu</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-deep-green mb-4">Our Menu</h2>
           <p className="text-deep-green/60 max-w-2xl mx-auto">
-            Carefully crafted beverages and treats made with the finest seasonal ingredients.
+            Crafted with care — from our rich espresso to our hearty bites and sweet treats.
           </p>
         </div>
 

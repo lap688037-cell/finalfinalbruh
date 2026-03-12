@@ -13,15 +13,15 @@ export default function Hero({ onBookClick }: { onBookClick: () => void }) {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sage/10 text-sage font-medium text-sm mb-6">
             <Coffee size={16} />
-            <span>Artisan Coffee Experience</span>
+            <span>Muscat's Favourite Coffee Stop</span>
           </div>
           <h1 className="text-6xl md:text-8xl font-bold text-deep-green leading-tight mb-6 text-balance">
             Fresh Coffee.<br />
             <span className="text-sage">Calm Moments.</span>
           </h1>
           <p className="text-lg md:text-xl text-deep-green/70 mb-10 max-w-lg">
-            Escape the rush and find your sanctuary in our nature-inspired lounge. 
-            Hand-roasted beans, artisanal pastries, and a breath of fresh air.
+            Tucked away on Al Hadiqa Street in Muscat, Chook Cafe is your go-to spot for rich espresso, 
+            hearty bites, and a relaxed atmosphere you'll want to come back to.
           </p>
           <div className="flex flex-wrap gap-4">
             <button 
@@ -41,7 +41,6 @@ export default function Hero({ onBookClick }: { onBookClick: () => void }) {
         </motion.div>
         
         <div className="relative h-[500px] lg:h-[700px] hidden lg:block">
-          {/* 3D elements are handled by the background canvas, but we can add some decorative elements here if needed */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
