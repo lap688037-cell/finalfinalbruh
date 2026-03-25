@@ -22,28 +22,31 @@ const MENU_DATA = {
   ],
 };
 
+type Category = keyof typeof MENU_DATA;
+
 export default function Menu() {
-  const [activeCategory, setActiveCategory] = useState<keyof typeof MENU_DATA>("Coffee");
+  const [activeCategory, setActiveCategory] = useState<Category>("Coffee");
 
   return (
-    <section className="py-24 px-6">
+    <section className="py-16 md:py-24 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-deep-green mb-4">Our Menu</h2>
-          <p className="text-deep-green/60 max-w-2xl mx-auto">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-deep-green mb-3">Our Menu</h2>
+          <p className="text-deep-green/60 max-w-2xl mx-auto text-sm md:text-base">
             Crafted with care — from our rich espresso to our hearty bites and sweet treats.
           </p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-12 overflow-x-auto pb-4 no-scrollbar">
-          {Object.keys(MENU_DATA).map((category) => (
+        {/* Category Tabs — scrollable on mobile */}
+        <div className="flex gap-2 md:gap-4 mb-8 md:mb-12 overflow-x-auto pb-2 px-1 snap-x snap-mandatory scrollbar-none">
+          {(Object.keys(MENU_DATA) as Category[]).map((category) => (
             <button
               key={category}
-              onClick={() => setActiveCategory(category as keyof typeof MENU_DATA)}
-              className={`px-8 py-3 rounded-full font-semibold transition-all whitespace-nowrap ${
-                activeCategory === category 
-                ? "bg-deep-green text-cream shadow-lg" 
-                : "bg-white text-deep-green/60 hover:bg-sage/10"
+              onClick={() => setActiveCategory(category)}
+              className={`px-5 md:px-8 py-2.5 md:py-3 rounded-full font-semibold transition-all whitespace-nowrap text-sm md:text-base snap-start flex-shrink-0 ${
+                activeCategory === category
+                  ? "bg-deep-green text-cream shadow-lg"
+                  : "bg-white text-deep-green/60 hover:bg-sage/10 border border-sage/10"
               }`}
             >
               {category}
@@ -51,7 +54,8 @@ export default function Menu() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        {/* Menu Items Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <AnimatePresence mode="wait">
             {MENU_DATA[activeCategory].map((item, index) => (
               <motion.div
@@ -59,16 +63,18 @@ export default function Menu() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all border border-sage/10 group"
+                transition={{ duration: 0.3, delay: index * 0.08 }}
+                className="bg-white p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-sm hover:shadow-xl transition-all border border-sage/10 group"
               >
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-bold text-deep-green group-hover:text-sage transition-colors">
+                <div className="flex justify-between items-start gap-3 mb-2">
+                  <h3 className="text-base md:text-xl font-bold text-deep-green group-hover:text-sage transition-colors leading-snug">
                     {item.name}
                   </h3>
-                  <span className="text-lg font-semibold text-sage">{item.price}</span>
+                  <span className="text-sm md:text-lg font-semibold text-sage whitespace-nowrap shrink-0">
+                    {item.price}
+                  </span>
                 </div>
-                <p className="text-deep-green/60 leading-relaxed">
+                <p className="text-deep-green/60 leading-relaxed text-sm md:text-base">
                   {item.desc}
                 </p>
               </motion.div>
