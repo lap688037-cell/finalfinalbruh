@@ -1,44 +1,67 @@
-import mongoose from 'mongoose';
+const Database = require('better-sqlite3');
+const path = require('path');
 
-let isConnected = false;
-async function connectDB() {
-  if (isConnected) return;
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
-}
+const dbPath = process.env.RENDER ? "/data/cafe.db" : "/tmp/cafe.db";
+const db = new Database(dbPath);
 
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+// Initialize Database
+db.exec(`
+  CREATE TABLE IF NOT EXISTS bookings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    date TEXT NOT NULL,
+    time TEXT NOT NULL,
+    guests INTEGER NOT NULL,
+    status TEXT DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
+module.exports = async (req, res) => {
+  const { method } = req;
 
   try {
-    await connectDB();
-    const db = mongoose.connection.db;
-
-    if (req.method === 'POST') {
-      const { name, email, date, time, guests } = req.body;
-      if (!name || !email || !date || !time || !guests) {
-        return res.status(400).json({ error: 'All fields are required.' });
-      }
-      await db.collection('bookings').insertOne({
-        name, email, date, time,
-        guests: Number(guests),
-        status: 'pending',
-        created_at: new Date()
-      });
-      return res.status(201).json({ success: true });
-    }
-
-    if (req.method === 'GET') {
-      const bookings = await db.collection('bookings').find({}).sort({ created_at: -1 }).toArray();
+    if (method === 'GET') {
+      const bookings = db.prepare("SELECT * FROM bookings ORDER BY created_at DESC").all();
       return res.status(200).json(bookings);
     }
 
-    return res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Failed to process request' });
+    if (method === 'POST') {
+      const { name, email, date, time, guests } = req.body;
+      
+      // Check if the slot is full (max 5 bookings per time slot)
+      const countStmt = db.prepare("SELECT COUNT(*) as count FROM bookings WHERE date = ? AND time = ? AND status != 'cancelled'");
+      const { count } = countStmt.get(date, time);
+
+      if (count >= 5) {
+        return res.status(400).json({ error: "This time slot is fully booked. Please choose another time." });
+      }
+
+      const stmt = db.prepare("INSERT INTO bookings (name, email, date, time, guests) VALUES (?, ?, ?, ?, ?)");
+      const info = stmt.run(name, email, date, time, guests);
+      return res.status(200).json({ id: info.lastInsertRowid, success: true });
+    }
+
+    if (method === 'PATCH') {
+      const { id } = req.query;
+      const { status } = req.body;
+      const stmt = db.prepare("UPDATE bookings SET status = ? WHERE id = ?");
+      stmt.run(status, id);
+      return res.status(200).json({ success: true });
+    }
+
+    if (method === 'DELETE') {
+      const { id } = req.query;
+      const stmt = db.prepare("DELETE FROM bookings WHERE id = ?");
+      stmt.run(id);
+      return res.status(200).json({ success: true });
+    }
+
+    res.setHeader('Allow', ['GET', 'POST', 'PATCH', 'DELETE']);
+    return res.status(405).end(`Method ${method} Not Allowed`);
+  } catch (error) {
+    console.error('API Error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
-}
+};

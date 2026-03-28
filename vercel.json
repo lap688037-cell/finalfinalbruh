@@ -7,14 +7,18 @@
       "config": { "distDir": "dist" }
     },
     {
-      "src": "server.ts",
+      "src": "api/*.js",
       "use": "@vercel/node"
     }
   ],
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "server.ts"
+      "source": "/api/bookings/:id?",
+      "destination": "/api/bookings.js"
+    },
+    {
+      "source": "/api/newsletter",
+      "destination": "/api/newsletter.js"
     },
     {
       "source": "/(.*)",

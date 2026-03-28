@@ -11,11 +11,13 @@ import Footer from './components/Footer';
 import ThreeCanvas from './components/ThreeCanvas';
 import BookingModal from './components/BookingModal';
 import AdminView from './components/AdminView';
+import AdminLoginModal from './components/AdminLoginModal';
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -31,6 +33,10 @@ export default function App() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleAdminClick = () => {
+    setIsAdminLoginOpen(true);
+  };
 
   if (isAdmin) {
     return (
@@ -68,7 +74,7 @@ export default function App() {
 
       {/* Admin Toggle (Hidden in plain sight) */}
       <button 
-        onClick={() => setIsAdmin(true)}
+        onClick={handleAdminClick}
         className="fixed bottom-8 right-8 z-30 w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-deep-green/20 hover:text-deep-green/60 transition-all"
       >
         <LayoutDashboard size={20} />
@@ -92,6 +98,12 @@ export default function App() {
       <BookingModal 
         isOpen={isBookingOpen} 
         onClose={() => setIsBookingOpen(false)} 
+      />
+
+      <AdminLoginModal 
+        isOpen={isAdminLoginOpen}
+        onClose={() => setIsAdminLoginOpen(false)}
+        onSuccess={() => setIsAdmin(true)}
       />
     </div>
   );

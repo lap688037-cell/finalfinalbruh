@@ -33,6 +33,29 @@ export default function AdminView() {
     }
   };
 
+  const updateStatus = async (id: number, status: string) => {
+    try {
+      await fetch(`/api/bookings/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      fetchBookings();
+    } catch (error) {
+      console.error('Failed to update status', error);
+    }
+  };
+
+  const deleteBooking = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this reservation?')) return;
+    try {
+      await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      fetchBookings();
+    } catch (error) {
+      console.error('Failed to delete booking', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-cream p-8">
       <div className="max-w-6xl mx-auto">
@@ -58,14 +81,18 @@ export default function AdminView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 key={booking.id}
-                className="bg-white p-6 rounded-3xl shadow-sm border border-sage/10 flex flex-wrap items-center justify-between gap-8 hover:shadow-md transition-shadow"
+                className={`bg-white p-6 rounded-3xl shadow-sm border border-sage/10 flex flex-wrap items-center justify-between gap-8 hover:shadow-md transition-shadow ${booking.status === 'cancelled' ? 'opacity-50 grayscale' : ''}`}
               >
                 <div className="flex items-center gap-6">
                   <div className="w-14 h-14 bg-sage/10 text-sage rounded-2xl flex items-center justify-center shrink-0">
                     <User size={24} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-deep-green">{booking.name}</h3>
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl font-bold text-deep-green">{booking.name}</h3>
+                      {booking.status === 'confirmed' && <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-full">Confirmed</span>}
+                      {booking.status === 'cancelled' && <span className="px-2 py-0.5 bg-rose-100 text-rose-700 text-[10px] font-bold uppercase rounded-full">Cancelled</span>}
+                    </div>
                     <div className="flex items-center gap-2 text-deep-green/60 text-sm">
                       <Mail size={14} />
                       {booking.email}
@@ -98,11 +125,30 @@ export default function AdminView() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <button className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors">
-                    <Check size={20} />
-                  </button>
-                  <button className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center hover:bg-rose-100 transition-colors">
-                    <X size={20} />
+                  {booking.status !== 'confirmed' && booking.status !== 'cancelled' && (
+                    <button 
+                      onClick={() => updateStatus(booking.id, 'confirmed')}
+                      className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors"
+                      title="Confirm Booking"
+                    >
+                      <Check size={20} />
+                    </button>
+                  )}
+                  {booking.status !== 'cancelled' && (
+                    <button 
+                      onClick={() => updateStatus(booking.id, 'cancelled')}
+                      className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center hover:bg-rose-100 transition-colors"
+                      title="Cancel Booking"
+                    >
+                      <X size={20} />
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => deleteBooking(booking.id)}
+                    className="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition-colors"
+                    title="Delete Permanently"
+                  >
+                    <X size={20} className="rotate-45" />
                   </button>
                 </div>
               </motion.div>

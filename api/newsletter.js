@@ -1,27 +1,35 @@
-import mongoose from 'mongoose';
+const Database = require('better-sqlite3');
 
-let isConnected = false;
-async function connectDB() {
-  if (isConnected) return;
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
-}
+const dbPath = process.env.RENDER ? "/data/cafe.db" : "/tmp/cafe.db";
+const db = new Database(dbPath);
 
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+// Initialize Database
+db.exec(`
+  CREATE TABLE IF NOT EXISTS newsletter (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
+module.exports = async (req, res) => {
+  const { method } = req;
 
   try {
-    await connectDB();
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ error: 'Email is required.' });
-    await mongoose.connection.db.collection('newsletters').insertOne({ email, created_at: new Date() });
-    return res.status(201).json({ success: true });
-  } catch (err) {
-    if (err.code === 11000) return res.status(400).json({ error: 'Already subscribed' });
-    return res.status(500).json({ error: 'Failed to subscribe' });
+    if (method === 'POST') {
+      const { email } = req.body;
+      const stmt = db.prepare("INSERT INTO newsletter (email) VALUES (?)");
+      stmt.run(email);
+      return res.status(200).json({ success: true });
+    }
+
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${method} Not Allowed`);
+  } catch (error) {
+    if (error.code === 'SQLITE_CONSTRAINT') {
+      return res.status(400).json({ error: "Already subscribed" });
+    }
+    console.error('API Error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
-}
+};
