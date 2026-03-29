@@ -24,10 +24,15 @@ export default function AdminView() {
   const fetchBookings = async () => {
     try {
       const response = await fetch('/api/bookings');
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Failed to fetch bookings');
+      }
       const data = await response.json();
       setBookings(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch bookings', error);
+      alert('Error loading bookings: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -35,24 +40,34 @@ export default function AdminView() {
 
   const updateStatus = async (id: number, status: string) => {
     try {
-      await fetch(`/api/bookings/${id}`, {
+      const response = await fetch(`/api/bookings/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
       });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Failed to update status');
+      }
       fetchBookings();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to update status', error);
+      alert('Error updating status: ' + error.message);
     }
   };
 
   const deleteBooking = async (id: number) => {
     if (!confirm('Are you sure you want to delete this reservation?')) return;
     try {
-      await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      const response = await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Failed to delete booking');
+      }
       fetchBookings();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to delete booking', error);
+      alert('Error deleting booking: ' + error.message);
     }
   };
 

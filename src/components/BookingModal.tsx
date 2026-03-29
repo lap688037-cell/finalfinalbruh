@@ -30,7 +30,16 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-      const result = await response.json();
+      
+      let result;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        throw new Error(text || 'Server returned an invalid response');
+      }
+
       if (response.ok) {
         setStep(2);
       } else {

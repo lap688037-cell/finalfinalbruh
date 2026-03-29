@@ -1,24 +1,30 @@
-const Database = require('better-sqlite3');
+import Database from 'better-sqlite3';
 
-const dbPath = process.env.RENDER ? "/data/cafe.db" : "/tmp/cafe.db";
-const db = new Database(dbPath);
+let db;
 
-// Initialize Database
-db.exec(`
-  CREATE TABLE IF NOT EXISTS newsletter (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-`);
+function getDb() {
+  if (!db) {
+    const dbPath = process.env.RENDER ? "/data/cafe.db" : "/tmp/cafe.db";
+    db = new Database(dbPath);
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS newsletter (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+  }
+  return db;
+}
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   const { method } = req;
+  const database = getDb();
 
   try {
     if (method === 'POST') {
       const { email } = req.body;
-      const stmt = db.prepare("INSERT INTO newsletter (email) VALUES (?)");
+      const stmt = database.prepare("INSERT INTO newsletter (email) VALUES (?)");
       stmt.run(email);
       return res.status(200).json({ success: true });
     }
@@ -30,6 +36,6 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: "Already subscribed" });
     }
     console.error('API Error:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
-};
+}
