@@ -2,7 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import Database from "better-sqlite3";
 import path from "path";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const isVercel = !!process.env.VERCEL;
 const isRender = !!process.env.RENDER;
@@ -29,35 +29,27 @@ db.exec(`
   );
 `);
 
-// Email Transporter setup
-let transporter = null;
+// Email Setup (Resend)
+let resendClient = null;
 
-function getTransporter() {
-  if (!transporter) {
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.warn('Email configuration missing (SMTP_HOST, SMTP_USER, SMTP_PASS). Emails will not be sent.');
+function getResend() {
+  if (!resendClient) {
+    if (!process.env.RESEND_API_KEY) {
+      console.warn('Email configuration missing (RESEND_API_KEY). Emails will not be sent.');
       return null;
     }
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_PORT === '465',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    resendClient = new Resend(process.env.RESEND_API_KEY);
   }
-  return transporter;
+  return resendClient;
 }
 
 async function sendEmail(to, subject, text, html) {
-  const mailTransporter = getTransporter();
-  if (!mailTransporter) return;
+  const resend = getResend();
+  if (!resend) return;
 
   try {
-    await mailTransporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
       to,
       subject,
       text,
