@@ -191,7 +191,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     <CheckCircle2 size={40} />
                   </div>
                   <h2 className="text-3xl font-bold text-deep-green mb-2">Reservation Confirmed!</h2>
-                  <p className="text-deep-green/60 mb-8">We've saved your table. See you soon at Verdant Brew.</p>
+                  <p className="text-deep-green/60 mb-8">We've saved your table and sent a confirmation email to {formData.email}. See you soon at Verdant Brew.</p>
                   
                   <div className="space-y-3">
                     <a 

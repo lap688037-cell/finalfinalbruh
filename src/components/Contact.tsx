@@ -36,7 +36,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-deep-green mb-8">Visit Us in Muscat</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-deep-green mb-8">Visit Our Sanctuary</h2>
             
             <div className="space-y-8">
               <div className="flex gap-6">
@@ -45,7 +45,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-deep-green mb-1">Location</h4>
-                  <p className="text-deep-green/60">HCRH+3XH, Al Hadiqa St<br />Muscat 133, Oman</p>
+                  <p className="text-deep-green/60">123 Botanical Avenue, Green District<br />Nature City, NC 45678</p>
                 </div>
               </div>
 
@@ -55,7 +55,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-deep-green mb-1">Opening Hours</h4>
-                  <p className="text-deep-green/60">Daily: 8:00 AM – 9:00 PM</p>
+                  <p className="text-deep-green/60">Mon - Fri: 7:00 AM - 8:00 PM<br />Sat - Sun: 8:00 AM - 9:00 PM</p>
                 </div>
               </div>
 
@@ -64,8 +64,8 @@ export default function Contact() {
                   <Phone size={24} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-deep-green mb-1">Phone</h4>
-                  <p className="text-deep-green/60">+968 9117 8110</p>
+                  <h4 className="text-xl font-bold text-deep-green mb-1">Contact</h4>
+                  <p className="text-deep-green/60">+1 (555) 123-4567<br />hello@verdantbrew.com</p>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function Contact() {
                 <Mail size={20} />
                 Join Our Newsletter
               </h4>
-              <p className="text-cream/70 mb-6">Stay updated with our latest specials and offers.</p>
+              <p className="text-cream/70 mb-6">Stay updated with our seasonal specials and events.</p>
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
                 <input 
                   required
@@ -92,7 +92,7 @@ export default function Contact() {
                   {status === 'loading' ? 'Joining...' : 'Sign Up'}
                 </button>
               </form>
-              {status === 'success' && <p className="text-sage text-sm mt-3 font-bold">You're in! Welcome to Chook Cafe. ☕</p>}
+              {status === 'success' && <p className="text-sage text-sm mt-3 font-bold">Welcome to the sanctuary! Check your email for a welcome message.</p>}
               {status === 'error' && <p className="text-rose-400 text-sm mt-3 font-bold">Something went wrong. Try again?</p>}
             </div>
           </motion.div>
@@ -102,19 +102,17 @@ export default function Contact() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="h-[500px] rounded-[40px] overflow-hidden shadow-2xl relative"
+            className="h-[500px] rounded-[40px] overflow-hidden shadow-2xl relative grayscale hover:grayscale-0 transition-all duration-700"
           >
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.5!2d58.5922!3d23.5880!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDM1JzE2LjgiTiA1OMKwMzUnMzIuMCJF!5e0!3m2!1sen!2som!4v1234567890"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Chook Cafe Location"
+            {/* Mock Map using an image */}
+            <img 
+              src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1000" 
+              alt="Map Location" 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
             />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            <div className="absolute inset-0 bg-sage/10 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="w-12 h-12 bg-deep-green text-cream rounded-full flex items-center justify-center shadow-2xl animate-bounce">
                 <MapPin size={24} />
               </div>
